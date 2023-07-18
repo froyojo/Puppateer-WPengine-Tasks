@@ -2,13 +2,11 @@ import express from 'express';
 const app = express();
 const port = 3010;
 import path from 'path';
-import puppeteer from 'puppeteer';
-
-app.use(express.static('static'));
+import { launch } from 'puppeteer';
 
 (async () => {
   // Launch the browser
-  const browser = await puppeteer.launch({ headless: false });
+  const browser = await launch({ headless: false });
 
   // Create a page
   const page = await browser.newPage();

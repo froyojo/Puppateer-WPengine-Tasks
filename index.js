@@ -1,15 +1,32 @@
-const express = require('express');
+import express from 'express';
 const app = express();
 const port = 3010;
-const path = require('path');
+import path from 'path';
+import puppeteer from 'puppeteer';
 
 app.use(express.static('static'));
 
-app.get('/', (req, res) => {
-  res.sendFile(path.resolve('pages/index.html'));
-});
+(async () => {
+  // Launch the browser
+  const browser = await puppeteer.launch({ headless: false });
 
-app.listen(port, () => {
-  console.log(`Example app listening at http://localhost:${port}`);
-});
-// fork #2
+  // Create a page
+  const page = await browser.newPage();
+
+  // Go to your site
+  await page.goto('https://identity.wpengine.com/');
+
+  // Query for an element handle.
+  const element = await page.waitForSelector('input > #idp-discovery-username');
+  const next = await page.waitForSelector('input > #idp-discovery-submit');
+
+  await element.fill('jonas.mooney@mtec.edu');
+
+  await next.click();
+
+  // Dispose of handle
+  await element.dispose();
+
+  // Close browser.
+  await browser.close();
+})();

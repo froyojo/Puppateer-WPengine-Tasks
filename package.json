@@ -5,6 +5,7 @@
   "scripts": {
     "start": "node index.js"
   },
+  "type": "module",
   "dependencies": {
     "express": "^4.17.1",
     "puppeteer": "^20.8.3"
